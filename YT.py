@@ -1,0 +1,13 @@
+a = input('ENTER YOUR LINK FOR YOUTUBE ')
+hours = int(input('Enter time in hours '))
+minute = int(input('Enter time in minute '))
+second= int(input('Enter time in second '))
+
+print(a,end='')
+print('?t=',end='')
+print(hours,end='')
+print('h',end='')
+print(minute,end='')
+print('m',end='')
+print(second,end='')
+print('s',end='')
