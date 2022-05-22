@@ -38,9 +38,9 @@ def one():
 			flag=flag+1
 			break
 	d = len(pass2)
-	if d > 8:
+	if d >= 8:
 		flag = flag+1
-	if d > 16:
+	if d > 15:
 		print(" ")
 		print("Warning")
 		print("your password is too big ")
