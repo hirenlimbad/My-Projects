@@ -156,7 +156,7 @@ else:
 		flag = 0
 		print('\n')
 
-		print("Suggested password",pass2[0:10])
+		print("Suggested password: ",pass2[0:10])
 		bt.sleep(3)
 		dkv = "Enter your new password: "
 		one(dkv)
