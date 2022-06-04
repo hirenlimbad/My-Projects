@@ -1,5 +1,4 @@
 flag = 0
-er = ["spe","int","low","upp","digit"]
 
 import string as k
 import maskpass as y
@@ -25,7 +24,7 @@ try:
 except:
 	j = "2"
 plain = ""
-if j >= "5":
+if int(j) >= 5 and int(j) <=20:
 	for k in range(int(j)):
 		sbc = ttt.randint(0,25)
 		a = q[sbc]
@@ -42,7 +41,8 @@ else:
 
 	
 
-	def one(dkv):	
+	def one(dkv):
+		global er	
 		er = ["spe","int","low","upp","digit"]
 
 		
@@ -94,6 +94,7 @@ else:
 			print("Password strength is very good")
 		if flag == 5:
 			print("Password strength is an excellent")
+
 		print("Password rank out of 5: ",flag)
 
 
@@ -104,7 +105,6 @@ else:
 
 		print("\n")
 		print("just a moment we are checking")
-		er = ["spe","int","low","upp","digit"]
 		for j in er:
 
 
@@ -116,27 +116,23 @@ else:
 			if j == "spe":
 				bt.sleep(1)
 				print("missing special character like @,#,$,%...")
-				# sbc = ttt.randint(0,25)
-				# pass2 = pass2+spacial[sbc]
+				
 
 			if j == "low":
 				bt.sleep(1)
 				print("missing lowercase like 'a','b','c','d'...")
-				# sbc = ttt.randint(0,25)
-				# pass2 = pass2+q[sbc]
+				
 
 			if j == "upp":
 				bt.sleep(1)
 				print("missing uppercase like 'A','B','C','D'")
-				# sbc = ttt.randint(0,25)
-				# pass2 = pass2+s[sbc] 
+				
 
 			if j == "digit":
 				bt.sleep(1)
 				print("your password must be 8 letters.")
 				bt.sleep(1)
-				# sbc = ttt.randint(0,25)
-			
+
 
 		trr = len(pass2)
 		for b in range(8):
@@ -156,7 +152,18 @@ else:
 		flag = 0
 		print('\n')
 
-		print("Suggested password: ",pass2[0:10])
+		print("Suggested password: ",pass2[2:12])
 		bt.sleep(3)
 		dkv = "Enter your new password: "
 		one(dkv)
+
+def save():
+	f = input("for save password enter name of account: ")
+	ft = open("password.py","a")
+	ft.write("\n")
+	ft.write(f)
+	ft.write(" : ")
+	ft.write(pass2)
+	ft.close()
+	print("Saved succussfully.")
+save()
