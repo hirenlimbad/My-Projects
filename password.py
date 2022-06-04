@@ -159,11 +159,11 @@ else:
 
 def save():
 	f = input("for save password enter name of account: ")
-	ft = open("password.txt","a")
+	ft = open(".password.txt","a")
 	ft.write("\n")
 	ft.write(f)
 	ft.write(" : ")
 	ft.write(pass2)
 	ft.close()
-	print("your password saved in password.txt.")
+	print("your password saved in password.txt.(file is hidden)")
 save()
