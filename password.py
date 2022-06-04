@@ -1,5 +1,7 @@
 flag = 0
-
+#you must have to install python packages.
+#for install type in terminal
+#pip install packege-name
 import string as k
 import maskpass as y
 import random as ttt
