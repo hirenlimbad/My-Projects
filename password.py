@@ -21,6 +21,7 @@ for w in b:
 	s.append(w)
 
 # Started
+# For Generate random password
 try:
 	j = int(input("if you want to generate random password please enter length of password otherwise press enter: "))
 except:
@@ -38,10 +39,11 @@ if int(j) >= 5 and int(j) <=20:
 		plain = plain+a+b+c+d
 
 
-	print(plain[0:int(j)])
-else:
-
+	pass2 = plain[0:int(j)]
+	print(pass2)
 	
+# check password strenth
+else:
 
 	def one(dkv):
 		global er	
@@ -158,7 +160,7 @@ else:
 		bt.sleep(3)
 		dkv = "Enter your new password: "
 		one(dkv)
-
+# save password with name
 def save():
 	f = input("for save password enter name of account: ")
 	ft = open(".password.txt","a")
