@@ -5,7 +5,8 @@ flag = 0
 import string as k
 import maskpass as y
 import random as ttt
-	
+import time as bt
+
 a = k.ascii_lowercase
 b = k.ascii_uppercase
 
@@ -46,12 +47,12 @@ if int(j) >= 5 and int(j) <=20:
 else:
 
 	def one(dkv):
-		global er	
+		global er
 		er = ["spe","int","low","upp","digit"]
 
 		
 		global pass2
-		pass2 = y.askpass(dkv,mask="-")
+		pass2 = input('Enter your password')#y.askpass(dkv,mask="-")
 		global flag
 		for v in pass2:
 			if v in g:
@@ -105,7 +106,7 @@ else:
 	dkv = "Enter your password: "
 	one(dkv)
 	while flag!=5:
-		import time as bt
+		
 
 		print("\n")
 		print("just a moment we are checking")
@@ -156,7 +157,7 @@ else:
 		flag = 0
 		print('\n')
 
-		print("Suggested password: ",pass2[2:12])
+		print("Suggested password: ",pass2[3:16])
 		bt.sleep(3)
 		dkv = "Enter your new password: "
 		one(dkv)
