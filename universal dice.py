@@ -1,3 +1,5 @@
+import random
+
 a = int(input("Enter a number of players "))
 b = []
 for j in range(1,a+1):
@@ -6,13 +8,14 @@ for j in range(1,a+1):
     b.append(k)
 
 lenth = len(b)
-import random
+
 jb = 0
+print('note: for exit type anything and hit enter')
 while jb != 5:
     for ka in range(lenth):
         print("turn is " + b[ka],end=' ')
         print(random.randint(1,6))
         t = input()
         
-        if t is str:
-            jb = 5
+    if t != '':
+        jb = 5
