@@ -172,3 +172,4 @@ def save():
 	ft.close()
 	print("your password saved in password.txt.(file is hidden)")
 save()
+# above code was written by hiren
