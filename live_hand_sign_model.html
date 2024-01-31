@@ -1,0 +1,283 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils"></script>
+    <link rel="stylesheet" type="text/css"
+        href="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.1/control_utils.css" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="demo.css" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils@0.1/camera_utils.js"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/control_utils@0.1/control_utils.js"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/drawing_utils@0.2/drawing_utils.js"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.1/hands.js" crossorigin="anonymous"></script>
+
+    <title>Live Hand</title>
+
+    <style>
+        .center {
+            text-align: center;
+        }
+
+        .container_main {
+            display: flex;
+            margin: 0px 10%;
+            justify-content: space-around;
+        }
+
+        .first {
+            width: 30%;
+        }
+
+        .lists {
+            margin-top: 20%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        button {
+            background-color: #EA4C89;
+            border-radius: 8px;
+            border-style: none;
+            box-sizing: border-box;
+            color: #FFFFFF;
+            cursor: pointer;
+            display: inline-block;
+            font-family: "Haas Grot Text R Web", "Helvetica Neue", Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            height: 40px;
+            line-height: 20px;
+            list-style: none;
+            margin: 0;
+            outline: none;
+            padding: 10px 16px;
+            position: relative;
+            text-align: center;
+            text-decoration: none;
+            transition: color 100ms;
+            vertical-align: baseline;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+
+        button:hover {
+            background-color: #F082AC;
+        }
+
+        input {
+            height: 30px;
+            margin-top: 20px;
+            border: 2px solid rgb(68, 153, 250);
+        }
+
+        label {
+            font-size: 20px;
+        }
+
+        .child {
+            margin-top: 20px;
+        }
+
+        .output3 {
+            border-radius: 20px;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <h1 class="center"> You are testing Rock Paper Scissor Model </h1>
+
+
+    <div class="columns">
+
+        <!-- WEBCAM INPUT -->
+        <div class="column" style="display: none;">
+            <article class="panel is-info">
+                <p class="panel-heading">
+                    Webcam Input
+                </p>
+                <div class="panel-block">
+                    <video class="input_video3"></video>
+                </div>
+            </article>
+        </div>
+
+        <!-- MEDIAPIPE OUTPUT -->
+        <div class="column center">
+            <article class="panel is-info">
+                <div class="panel-block">
+                    <canvas class="output3" width="480px" height="480px"></canvas>
+                </div>
+            </article>
+            <h1 id="prediction">Prediction</h1>
+        </div>
+    </div>
+
+    <div class="loading">
+        <div class="spinner"></div>
+    </div>
+    <div style="visibility: hidden;" class="control3">
+    </div>
+
+    belo
+    {{ message }}
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+
+
+    <script>
+
+        
+
+        const video3 = document.getElementsByClassName('input_video3')[0];
+        const out3 = document.getElementsByClassName('output3')[0];
+        const controlsElement3 = document.getElementsByClassName('control3')[0];
+        const canvasCtx3 = out3.getContext('2d');
+        const fpsControl = new FPS();
+
+        const classMap = {
+            1: "Rock",
+            2: "Scissor",
+            0: "Paper",
+        };
+
+        const predictionText = document.getElementById('prediction');
+        const spinner = document.querySelector('.loading');
+        spinner.ontransitionend = () => {
+            spinner.style.display = 'none';
+        };
+
+        function onResultsHands(results) {
+            document.body.classList.add('loaded');
+            fpsControl.tick();
+
+            canvasCtx3.save();
+            canvasCtx3.clearRect(0, 0, out3.width, out3.height);
+            canvasCtx3.drawImage(
+                results.image, 0, 0, out3.width, out3.height);
+            if (results.multiHandLandmarks && results.multiHandedness) {
+                for (let index = 0; index < results.multiHandLandmarks.length; index++) {
+                    const classification = results.multiHandedness[index];
+                    const isRightHand = classification.label === 'Right';
+                    const landmarks = results.multiHandLandmarks[index];
+
+                    let flatArray = Object.values(landmarks).flatMap(obj => [obj.x, obj.y, obj.z]);
+                    let tensor = tf.tensor(flatArray, [1, 63]);
+                    let y_pred = model.predict(tensor);
+                    let y_pred_argmax = tf.argMax(y_pred, axis = 1);
+                    let y_pred_argmax_data = y_pred_argmax.dataSync();
+                    predictionText.innerHTML = classMap[y_pred_argmax_data[0]];
+
+                    const body = document.querySelector('body');
+                    if (y_pred_argmax_data[0] == 0) {
+                        body.style.backgroundColor = "blue";
+                    } else if (y_pred_argmax_data[0] == 1) {
+                        body.style.backgroundColor = "red";
+
+                    } else if (y_pred_argmax_data[0] == 2) {
+                        body.style.backgroundColor = "green";
+
+                    }
+
+                    let prediction = y_pred_argmax_data[0];
+                    drawConnectors(
+                        canvasCtx3, landmarks, HAND_CONNECTIONS,
+                        { color: isRightHand ? '#00FF00' : '#FF0000' }),
+                        drawLandmarks(canvasCtx3, landmarks, {
+                            color: isRightHand ? '#00FF00' : '#FF0000',
+                            fillColor: isRightHand ? '#FF0000' : '#00FF00',
+                            radius: (x) => {
+                                return lerp(x.from.z, -0.15, .1, 10, 1);
+                            }
+                        });
+                }
+            }
+            canvasCtx3.restore();
+        }
+
+        const hands = new Hands({
+            locateFile: (file) => {
+                return `https://cdn.jsdelivr.net/npm/@mediapipe/hands@0.1/${file}`;
+            }
+        });
+        hands.onResults(onResultsHands);
+
+        const camera = new Camera(video3, {
+            onFrame: async () => {
+                await hands.send({ image: video3 });
+            },
+            width: 480,
+            height: 480
+        });
+        camera.start();
+
+        new ControlPanel(controlsElement3, {
+            selfieMode: true,
+            maxNumHands: 2,
+            minDetectionConfidence: 0.5,
+            minTrackingConfidence: 0.5
+        })
+            .add([
+                new StaticText({ title: 'MediaPipe Hands' }),
+                fpsControl,
+                new Toggle({ title: 'Selfie Mode', field: 'selfieMode' }),
+                new Slider(
+                    { title: 'Max Number of Hands', field: 'maxNumHands', range: [1, 4], step: 1 }),
+                new Slider({
+                    title: 'Min Detection Confidence',
+                    field: 'minDetectionConfidence',
+                    range: [0, 1],
+                    step: 0.01
+                }),
+                new Slider({
+                    title: 'Min Tracking Confidence',
+                    field: 'minTrackingConfidence',
+                    range: [0, 1],
+                    step: 0.01
+                }),
+            ])
+            .on(options => {
+                video3.classList.toggle('selfie', options.selfieMode);
+                hands.setOptions(options);
+            });
+
+
+
+
+
+
+        // Model Testing    
+
+
+        async function loadModel() {
+            // Get the model JSON and weights from the Django context
+            console.log("Model will Loaded soon");
+
+            try {
+                model = await tf.loadLayersModel('https://hirenlimbad.github.io/My-Projects/model.json');
+                
+                console.log("Model Loaded");
+                y_pred = model.predict(tf.zeros([1, 480, 480, 3]));
+    
+
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+
+        loadModel();
+    </script>
+</body>
+
+</html>
