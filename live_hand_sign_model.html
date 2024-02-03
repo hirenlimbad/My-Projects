@@ -264,7 +264,8 @@
             console.log("Model will Loaded soon");
 
             try {
-                model = await tf.loadLayersModel('https://hirenlimbad.github.io/My-Projects/model.json');
+                // model = await tf.loadLayersModel('https://hirenlimbad.github.io/My-Projects/model.json');
+                model = await tf.loadLayersModel('model.json');
                 
                 console.log("Model Loaded");
                 y_pred = model.predict(tf.zeros([1, 480, 480, 3]));
